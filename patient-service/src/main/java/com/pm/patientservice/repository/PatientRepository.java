@@ -8,5 +8,6 @@ import java.util.UUID;
 
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, UUID> {
-
+    // JPA will expose these
+    boolean existsByEmail(String email);
 }
