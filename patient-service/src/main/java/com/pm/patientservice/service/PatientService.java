@@ -25,9 +25,11 @@ public class PatientService {
                 .map(PatientMapper::toDTO).toList();
     }
 
-    public void savePatient (PatientRequestDTO patientRequestDTO) {
+    public PatientResponseDTO savePatient (PatientRequestDTO patientRequestDTO) {
         Patient patient = PatientMapper.toEntity(patientRequestDTO);
         patientRepository.save(patient);
+        // return back to client after request saved
+        return PatientMapper.toDTO(patient);
     }
 
 }

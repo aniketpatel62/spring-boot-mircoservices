@@ -5,6 +5,7 @@ import com.pm.patientservice.model.Patient;
 import com.pm.patientservice.service.PatientService;
 import com.pm.patientservice.dto.PatientResponseDTO;
 import com.pm.patientservice.service.mapper.PatientMapper;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,8 +27,8 @@ public class PatientController {
     }
 
     @PostMapping
-    public ResponseEntity<?> savePatient(@RequestBody PatientRequestDTO patientRequestDTO) {
-        patientService.savePatient(patientRequestDTO);
-        return ResponseEntity.ok().body("New patient added");
+    public ResponseEntity<PatientResponseDTO> savePatient(@Valid @RequestBody PatientRequestDTO patientRequestDTO) {
+        PatientResponseDTO patientResponseDTO = patientService.savePatient(patientRequestDTO);
+        return ResponseEntity.ok().body(patientResponseDTO);
     }
 }
