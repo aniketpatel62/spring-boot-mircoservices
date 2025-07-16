@@ -1,11 +1,12 @@
 package com.pm.patientservice.service;
 
 import com.pm.patientservice.dto.PatientRequestDTO;
+import com.pm.patientservice.dto.PatientResponseDTO;
 import com.pm.patientservice.exception.EmailAlreadyExistsException;
 import com.pm.patientservice.exception.PatientNotFoundException;
+import com.pm.patientservice.grpc.BillingServiceGrpcClient;
 import com.pm.patientservice.model.Patient;
 import com.pm.patientservice.repository.PatientRepository;
-import com.pm.patientservice.dto.PatientResponseDTO;
 import com.pm.patientservice.service.mapper.PatientMapper;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +18,11 @@ import java.util.UUID;
 public class PatientService {
 
     private final PatientRepository patientRepository;
+    private final BillingServiceGrpcClient billingServiceGrpcClient;
 
-    public PatientService (PatientRepository patientRepository) {
+    public PatientService (PatientRepository patientRepository,  BillingServiceGrpcClient billingServiceGrpcClient) {
         this.patientRepository = patientRepository;
+        this.billingServiceGrpcClient = billingServiceGrpcClient;
     }
 
     public List<PatientResponseDTO>getPatients (){
@@ -36,6 +39,9 @@ public class PatientService {
 
         Patient patient = PatientMapper.toEntity(patientRequestDTO);
         patientRepository.save(patient);
+
+        // triggering grcp service
+        billingServiceGrpcClient.createBillingAccount(patient.getId().toString(),patient.getName(),patient.getEmail());
 
         // return back to client after request saved
         return PatientMapper.toDTO(patient);
