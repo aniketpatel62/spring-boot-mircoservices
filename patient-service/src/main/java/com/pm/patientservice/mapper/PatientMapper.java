@@ -1,4 +1,4 @@
-package com.pm.patientservice.service.mapper;
+package com.pm.patientservice.mapper;
 
 import com.pm.patientservice.dto.PatientRequestDTO;
 import com.pm.patientservice.model.Patient;
