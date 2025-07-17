@@ -8,6 +8,9 @@ spring:
         webflux:
           routes:
             # Route for /api/patients/** to patient-service
+            ## REST CLIENT -> http://localhost:4004/api/patients
+            ## API GATEWAY -> http://patient-service:4000/patients
+            ## PATIENT SERVICE -> /patients
                     - id: patient-service-route
                       uri: http://patient-service:4000
                       predicates:
